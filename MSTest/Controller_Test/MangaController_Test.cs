@@ -70,17 +70,19 @@ namespace MSTest.Controller_Test
         [TestMethod]
         public async Task Delete_ValidManga_DeleteMangaFromDatabase()
         {
-            List<Manga> newManga = new List<Manga>() 
+            Manga newManga = new Manga() { Id = 7, Name = "CONAN", Description = "FOR TEEN", price = 9 };
+            List<Manga> newMangaAfterDelete = new List<Manga>()
             {
                 new Manga() { Id = 1, Name = "CONAN", Description = "FOR TEEN", price = 5 },
-                new Manga() { Id = 2, Name = "CONAN-1", Description = "FOR TEEN", price = 6 },
                 new Manga() { Id = 3, Name = "CONAN-2", Description = "FOR TEEN", price = 7 }
             };
-            _mangaService.Setup(x => x.Delete(2)).Returns(newManga);
+            _mangaService.Setup(x => x.Delete(2)).Returns(newMangaAfterDelete);
+
+            await _controller.Post(newManga);
             var result = await _controller.Delete(2);
             result.Should().BeOfType<OkObjectResult>();
             var okRequestResult = result as OkObjectResult;
-            okRequestResult.Value.Should().Be(newManga);
+            okRequestResult.Value.Should().Be(newMangaAfterDelete);
         }
 
     }
