@@ -85,5 +85,25 @@ namespace MSTest.Controller_Test
             okRequestResult.Value.Should().Be(newMangaAfterDelete);
         }
 
+        [TestMethod]
+        public async Task Search_ValidInput_ReturnListOfManga()
+        {
+            Manga newManga = new Manga() { Id = 7, Name = "DB", Description = "FOR TEEN", price = 9 };
+            List<Manga> newMangaNeedSearch = new List<Manga>()
+            {
+                new Manga() { Id = 1, Name = "CONAN", Description = "FOR TEEN", price = 5 },
+                new Manga() { Id = 3, Name = "CONAN-2", Description = "FOR TEEN", price = 7 }
+            };
+            _mangaService.Setup(x => x.Search("Co")).Returns(newMangaNeedSearch);
+            _mangaService.Object.Post(newManga);
+            _mangaService.Object.Search("DB").Should().BeNull();
+
+            await _controller.Post(newManga);
+            var result = await _controller.Search("Co");
+            result.Should().BeOfType<OkObjectResult>();
+            var okRequestResult = result as OkObjectResult;
+            okRequestResult.Value.Should().Be(newMangaNeedSearch);
+        }
+
     }
 }

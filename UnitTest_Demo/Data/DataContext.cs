@@ -7,6 +7,7 @@ namespace UnitTest_Demo.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public virtual DbSet<Manga> Mangas { get; set; }
+        public virtual DbSet<User> Users { get; set; }
         protected void OnModelCreate(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Manga>().HasData(

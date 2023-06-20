@@ -57,5 +57,27 @@ namespace MSTest.Bank_Test
             var result = bankAccount.Withdraw(withdraw);
             result.Should().BeFalse();
         }
+
+        [TestMethod]
+        public void LogWithoutResult_LogMockStringOutputStr_ReturnTrue()
+        {
+            var logMock = new Mock<ILogger>();
+            string strOutput = "hello";
+            logMock.Setup(x => x.LogWithOutResult(It.IsAny<string>(),out strOutput)).Returns(true);
+            string result = "";
+            logMock.Object.LogWithOutResult("Ha", out result).Should().BeTrue();
+            result.Should().Be(strOutput);
+        }
+
+        [TestMethod]
+        public void LogWithRefObj_ValidInput_ReturnTrue()
+        {
+            var logMock = new Mock<ILogger>();
+            Customer customer = new Customer();
+            Customer customerNotUsed = new Customer();
+            logMock.Setup(x => x.LogWithRefObj(ref customer)).Returns(true);
+            logMock.Object.LogWithRefObj(ref customer).Should().BeTrue();
+            logMock.Object.LogWithRefObj(ref customerNotUsed).Should().BeFalse();
+        }
     }
 }

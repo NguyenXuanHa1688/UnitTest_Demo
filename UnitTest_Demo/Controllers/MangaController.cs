@@ -73,5 +73,19 @@ namespace UnitTest_Demo.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet("Search")]
+        public async Task<IActionResult> Search(string key)
+        {
+            try
+            {
+                var searchManga = _mangaService.Search(key);
+                return Ok(searchManga);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
     }
 }

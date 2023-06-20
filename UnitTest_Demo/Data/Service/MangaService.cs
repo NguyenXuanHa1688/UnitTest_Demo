@@ -1,4 +1,7 @@
-﻿using UnitTest_Demo.Data.Interface;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Linq;
+using UnitTest_Demo.Data.Interface;
 using UnitTest_Demo.Model;
 
 namespace UnitTest_Demo.Data.Service
@@ -41,6 +44,20 @@ namespace UnitTest_Demo.Data.Service
             _context.Remove(MangaToDelete);
             _context.SaveChanges();
             return _context.Mangas.ToList();
+        }
+
+        public List<Manga> Search(string key)
+        {
+            var MangaToSearch = _context.Mangas.Where(x => x.Name
+                                                    .ToLower()
+                                                    .Contains(key
+                                                    .ToLower()))
+                                                    .ToList();
+            //if(MangaToSearch.IsNullOrEmpty())
+            //{
+            //    return null;
+            //}
+            return MangaToSearch;
         }
     } 
 }
